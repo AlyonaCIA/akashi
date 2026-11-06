@@ -59,6 +59,44 @@ CI runs all of the above. `ci-success` is the single required check.
 - Pin GitHub Actions by commit SHA with the version in a trailing comment.
 - Every workflow sets `permissions: {}` at the top and grants per job.
 
+## Skills
+
+Project skills in `.claude/skills/`:
+
+- `performance-optimization`: measure before and after any performance change.
+- `write-adr`: format and rules for decision records.
+
+Security research plugins from Trail of Bits are declared in `.claude/settings.json`,
+pinned to a commit. Install them once per machine:
+
+```sh
+claude plugin marketplace add trailofbits/skills
+claude plugin install static-analysis@trailofbits --scope project
+```
+
+Repeat the install for each plugin listed under `enabledPlugins`. Use them as follows:
+
+| Task | Plugin |
+|---|---|
+| Review a pull request for security | `differential-review` |
+| Run or interpret CodeQL, Semgrep, SARIF | `static-analysis` |
+| Find more instances of a confirmed bug | `variant-analysis` |
+| Write a Semgrep rule for Plane 1 | `semgrep-rule-creator` |
+| Audit configuration and APIs | `insecure-defaults`, `sharp-edges` |
+| Audit dependencies | `supply-chain-risk-auditor` |
+| Audit workflows that call AI agents | `agentic-actions-auditor` |
+| Write witness and property tests | `property-based-testing` |
+| Check that tests catch real faults | `mutation-testing` |
+
+Not enabled by default:
+
+- `fp-check`: its `Stop` hook adds a model call to every turn. Enable it for a triage
+  session only.
+- `modern-python`: its hooks shim `pip`, `python` and `uv`.
+
+Third-party plugins are instructions and scripts from outside this repository. Review
+the diff before moving the pinned `ref`.
+
 ## Boundaries
 
 - Code under `src/akashi/` must import without cloud credentials.
