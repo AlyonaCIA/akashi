@@ -67,21 +67,22 @@ verification and admission.
 
 ```python
 class Signal(BaseModel):
-    source: str              # "ruff" | "uv-audit" | "semgrep" | "zizmor" | "guarddog"
+    source: str  # "ruff" | "uv-audit" | "semgrep" | "zizmor" | "guarddog"
     rule_id: str
     message: str
     file: str
     line: int
-    line_text: str           # must match the file at `line`; see ADR-0005
+    line_text: str  # must match the file at `line`; see ADR-0005
     cwe: str | None
     cve: str | None
-    aliases: list[str]       # GHSA/PYSEC/OSV ids for the same CVE
-    package: str | None      # dependency advisories: filtered by package, not line
+    aliases: list[str]  # GHSA/PYSEC/OSV ids for the same CVE
+    package: str | None  # dependency advisories: filtered by package, not line
+
 
 class Finding(BaseModel):
     signal: Signal
     verdict: Literal["reachable", "unreachable", "mitigated", "pre-existing"]
-    evidence: list[str]      # file:line citations proving the verdict
+    evidence: list[str]  # file:line citations proving the verdict
     patch: GitPatch | None
     test: DifferentialTest | None
 ```
