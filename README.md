@@ -56,6 +56,10 @@ uv run pyright
   build smoke test. `CI success` aggregates every job.
 - **Release** (`release.yml`) on a `vX.Y.Z` tag matching the project version: builds the
   distributions, attests their provenance, and publishes a GitHub release.
+- **Dependency review** on every pull request blocks new dependencies with known
+  vulnerabilities of moderate severity or higher.
+- **CodeQL** analyses Python and the workflows (`security-extended`) on pull requests, on
+  `main` and weekly, and reports to code scanning.
 - **Dependabot** updates GitHub Actions and Python dependencies weekly, after a seven-day
   cooldown.
 
