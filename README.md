@@ -33,6 +33,21 @@ Hypotheses that come from the model also need a **witness**: a test that passes 
 and fails on `head`, executed in an isolated sandbox. The sandbox is built only if
 measurement shows enough hypotheses can be witnessed.
 
+## Architecture decisions
+
+The design is recorded in [`docs/architecture/`](docs/architecture/): the target
+architecture, the evidence behind every figure, and one record per decision.
+
+| ADR | Decision |
+|---|---|
+| [0001](docs/architecture/decisions/0001-deterministic-recall-llm-precision.md) | A deterministic pass owns recall; the LLM owns precision |
+| [0002](docs/architecture/decisions/0002-phases-over-roles.md) | Phases and context partitioning, not agent roles |
+| [0003](docs/architecture/decisions/0003-differential-security-tests.md) | Differential security tests replace generated penetration tests |
+| [0004](docs/architecture/decisions/0004-untrusted-input-isolation.md) | Privilege separation between components that read hostile input |
+| [0005](docs/architecture/decisions/0005-finding-admission.md) | Deterministic admission and prioritisation before publication |
+| [0006](docs/architecture/decisions/0006-cwe-scope-restriction.md) | Restrict scope by CWE class |
+| [0007](docs/architecture/decisions/0007-deterministic-toolchain.md) | Toolchain for the deterministic signal pass |
+
 ## Status
 
 Repository setup. Planes 1 to 4 are designed and migrate from Sentoru in separate pull
