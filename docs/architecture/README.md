@@ -109,6 +109,11 @@ src/akashi/
 
 Planes 0 and 4 live in CI and in the posting service, not in this package.
 
+## Cost model
+
+Cost and latency per pull request, and what shadow mode measures to fill them in:
+[`cost-model.md`](cost-model.md).
+
 ## Build order
 
 Ordered by measured return, not by dependency.
