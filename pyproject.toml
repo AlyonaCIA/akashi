@@ -42,11 +42,12 @@ ignore = ["E501", "C901"]
 convention = "google"
 
 [tool.pyright]
-include = ["src", "tests"]
+include = ["src", "tests", "evals"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["-ra", "--strict-markers", "--strict-config", "--cov=akashi", "--cov-report=term-missing", "--cov-fail-under=90"]
+pythonpath = ["."]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--cov=akashi", "--cov=evals", "--cov-report=term-missing", "--cov-fail-under=90"]
 markers = ["container: requires a container runtime"]
