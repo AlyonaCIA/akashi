@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580" role="img" aria-labelledby="title desc">
   <title id="title">Akashi architecture</title>
-  <desc id="desc">Five planes process a pull request: intake, deterministic signals, LLM verification, deterministic admission, and posting. Only the posting plane holds credentials, and it never reads attacker-controlled input.</desc>
+  <desc id="desc">Five planes process a pull request: intake, deterministic signals, LLM verification, deterministic admission, and posting. Only the posting plane holds credentials, and it never reads attacker-controlled input. Each plane is marked as designed or gated on measurement.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#57606A"/>
@@ -14,6 +14,7 @@
       .item { font-size: 12px; fill: #424A53; }
       .strong { font-size: 12px; font-weight: 600; }
       .band { font-size: 12px; font-weight: 600; }
+      .status { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; }
       .box { fill: #F6F8FA; stroke: #D0D7DE; stroke-width: 1.5; }
       .pill { fill: #FFFFFF; stroke: #D0D7DE; stroke-width: 1.5; }
       .flow { stroke: #57606A; stroke-width: 1.5; fill: none; }
@@ -21,90 +22,111 @@
       .purple { fill: #8250DF; }
       .green { fill: #1A7F37; }
       .red { fill: #CF222E; }
+      .designed { fill: #EAEEF2; stroke: #8C959F; stroke-width: 1; }
+      .designed-text { fill: #424A53; }
+      .gated { fill: #FFF8C5; stroke: #BF8700; stroke-width: 1; }
+      .gated-text { fill: #7D4E00; }
     </style>
   </defs>
 
-  <rect x="0" y="0" width="1100" height="520" rx="12" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1100" height="580" rx="12" fill="#FFFFFF"/>
 
   <text x="40" y="44" class="title">Akashi</text>
   <text x="40" y="66" class="subtitle">Publish a security finding only when it can be proven.</text>
 
-  <rect x="20" y="152" width="90" height="46" rx="23" class="pill"/>
-  <text x="65" y="172" class="item" text-anchor="middle">Pull</text>
-  <text x="65" y="188" class="item" text-anchor="middle">request</text>
-  <line x1="110" y1="175" x2="128" y2="175" class="flow" marker-end="url(#arrow)"/>
+  <rect x="20" y="164" width="90" height="46" rx="23" class="pill"/>
+  <text x="65" y="184" class="item" text-anchor="middle">Pull</text>
+  <text x="65" y="200" class="item" text-anchor="middle">request</text>
+  <line x1="110" y1="187" x2="128" y2="187" class="flow" marker-end="url(#arrow)"/>
 
-  <rect x="130" y="100" width="175" height="150" rx="10" class="box"/>
+  <rect x="130" y="100" width="175" height="175" rx="10" class="box"/>
   <rect x="130" y="100" width="175" height="6" rx="3" class="blue"/>
   <text x="146" y="128" class="plane blue">PLANE 0</text>
   <text x="146" y="150" class="name">Intake</text>
   <text x="146" y="180" class="item">Normalise the diff</text>
   <text x="146" y="200" class="item">pull_request trigger only</text>
   <text x="146" y="220" class="item">No LLM, no credentials</text>
-  <line x1="305" y1="175" x2="323" y2="175" class="flow" marker-end="url(#arrow)"/>
+  <rect x="146" y="240" width="72" height="20" rx="10" class="designed"/>
+  <text x="182" y="254" class="status designed-text" text-anchor="middle">DESIGNED</text>
+  <line x1="305" y1="187" x2="323" y2="187" class="flow" marker-end="url(#arrow)"/>
 
-  <rect x="325" y="100" width="175" height="150" rx="10" class="box"/>
+  <rect x="325" y="100" width="175" height="175" rx="10" class="box"/>
   <rect x="325" y="100" width="175" height="6" rx="3" class="blue"/>
   <text x="341" y="128" class="plane blue">PLANE 1</text>
   <text x="341" y="150" class="name">Signals</text>
   <text x="341" y="180" class="item">ruff S · zizmor</text>
   <text x="341" y="200" class="item">uv audit · semgrep</text>
   <text x="341" y="220" class="item">Deterministic, under 3 s</text>
-  <line x1="500" y1="175" x2="518" y2="175" class="flow" marker-end="url(#arrow)"/>
+  <rect x="341" y="240" width="72" height="20" rx="10" class="designed"/>
+  <text x="377" y="254" class="status designed-text" text-anchor="middle">DESIGNED</text>
+  <line x1="500" y1="187" x2="518" y2="187" class="flow" marker-end="url(#arrow)"/>
 
-  <rect x="520" y="100" width="175" height="150" rx="10" class="box"/>
+  <rect x="520" y="100" width="175" height="175" rx="10" class="box"/>
   <rect x="520" y="100" width="175" height="6" rx="3" class="purple"/>
   <text x="536" y="128" class="plane purple">PLANE 2</text>
   <text x="536" y="150" class="name">Verification</text>
   <text x="536" y="180" class="item">One LLM call per signal</text>
   <text x="536" y="200" class="item">New evidence, file:line</text>
   <text x="536" y="220" class="item">No credentials</text>
-  <line x1="695" y1="175" x2="713" y2="175" class="flow" marker-end="url(#arrow)"/>
+  <rect x="536" y="240" width="64" height="20" rx="10" class="gated"/>
+  <text x="568" y="254" class="status gated-text" text-anchor="middle">GATED</text>
+  <line x1="695" y1="187" x2="713" y2="187" class="flow" marker-end="url(#arrow)"/>
 
-  <rect x="715" y="100" width="175" height="150" rx="10" class="box"/>
+  <rect x="715" y="100" width="175" height="175" rx="10" class="box"/>
   <rect x="715" y="100" width="175" height="6" rx="3" class="blue"/>
   <text x="731" y="128" class="plane blue">PLANE 3</text>
   <text x="731" y="150" class="name">Admission</text>
   <text x="731" y="180" class="item">CVE alias dedup</text>
   <text x="731" y="200" class="item">Anchor check, evidence</text>
   <text x="731" y="220" class="item">No proof, no publication</text>
-  <line x1="890" y1="175" x2="908" y2="175" class="flow" marker-end="url(#arrow)"/>
+  <rect x="731" y="240" width="72" height="20" rx="10" class="designed"/>
+  <text x="767" y="254" class="status designed-text" text-anchor="middle">DESIGNED</text>
+  <line x1="890" y1="187" x2="908" y2="187" class="flow" marker-end="url(#arrow)"/>
 
-  <rect x="910" y="100" width="170" height="150" rx="10" class="box"/>
+  <rect x="910" y="100" width="170" height="175" rx="10" class="box"/>
   <rect x="910" y="100" width="170" height="6" rx="3" class="green"/>
   <text x="926" y="128" class="plane green">PLANE 4</text>
   <text x="926" y="150" class="name">Posting</text>
   <text x="926" y="180" class="item">Per-PR token, 1 h</text>
   <text x="926" y="200" class="item">Validated JSON only</text>
   <text x="926" y="220" class="item">Never reads PR text</text>
+  <rect x="926" y="240" width="72" height="20" rx="10" class="designed"/>
+  <text x="962" y="254" class="status designed-text" text-anchor="middle">DESIGNED</text>
 
-  <path d="M412,250 L412,296" class="flow" marker-end="url(#arrow)"/>
-  <rect x="322" y="298" width="180" height="40" rx="20" class="pill"/>
-  <text x="412" y="323" class="item" text-anchor="middle">SARIF → code scanning</text>
+  <path d="M412,275 L412,321" class="flow" marker-end="url(#arrow)"/>
+  <rect x="322" y="323" width="180" height="40" rx="20" class="pill"/>
+  <text x="412" y="348" class="item" text-anchor="middle">SARIF → code scanning</text>
 
-  <path d="M607,250 L607,296" class="flow" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
-  <rect x="520" y="298" width="175" height="62" rx="10" fill="#FFFFFF" stroke="#8250DF" stroke-width="1.5" stroke-dasharray="6 4"/>
-  <text x="607" y="319" class="strong" text-anchor="middle">Witness sandbox</text>
-  <text x="607" y="336" class="item" text-anchor="middle">base passes, head fails</text>
-  <text x="607" y="352" class="item" text-anchor="middle">gated on testability</text>
+  <path d="M607,275 L607,321" class="flow" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+  <rect x="520" y="323" width="175" height="84" rx="10" fill="#FFFFFF" stroke="#8250DF" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="607" y="344" class="strong" text-anchor="middle">Witness sandbox</text>
+  <text x="607" y="361" class="item" text-anchor="middle">base passes, head fails</text>
+  <rect x="575" y="374" width="64" height="20" rx="10" class="gated"/>
+  <text x="607" y="388" class="status gated-text" text-anchor="middle">GATED</text>
 
-  <path d="M995,250 L995,296" class="flow" marker-end="url(#arrow)"/>
-  <rect x="935" y="298" width="120" height="40" rx="20" class="pill"/>
-  <text x="995" y="323" class="item" text-anchor="middle">PR review</text>
+  <path d="M995,275 L995,321" class="flow" marker-end="url(#arrow)"/>
+  <rect x="935" y="323" width="120" height="40" rx="20" class="pill"/>
+  <text x="995" y="348" class="item" text-anchor="middle">PR review</text>
 
-  <line x1="900" y1="88" x2="900" y2="440" stroke="#CF222E" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line x1="900" y1="88" x2="900" y2="480" stroke="#CF222E" stroke-width="1.5" stroke-dasharray="6 5"/>
   <text x="896" y="84" class="strong red" text-anchor="end">trust boundary</text>
 
-  <rect x="130" y="392" width="760" height="40" rx="8" fill="#FFF8C5" stroke="#D4A72C" stroke-width="1"/>
-  <text x="510" y="417" class="band" text-anchor="middle">Reads attacker-controlled input · holds no credentials</text>
-  <rect x="910" y="392" width="170" height="40" rx="8" fill="#DAFBE1" stroke="#4AC26B" stroke-width="1"/>
-  <text x="995" y="417" class="band" text-anchor="middle">Holds credentials</text>
+  <rect x="130" y="432" width="760" height="40" rx="8" fill="#FFF8C5" stroke="#D4A72C" stroke-width="1"/>
+  <text x="510" y="457" class="band" text-anchor="middle">Reads attacker-controlled input · holds no credentials</text>
+  <rect x="910" y="432" width="170" height="40" rx="8" fill="#DAFBE1" stroke="#4AC26B" stroke-width="1"/>
+  <text x="995" y="457" class="band" text-anchor="middle">Holds credentials</text>
 
-  <rect x="130" y="460" width="12" height="12" rx="3" class="blue"/>
-  <text x="150" y="471" class="item">Deterministic, no model</text>
-  <rect x="330" y="460" width="12" height="12" rx="3" class="purple"/>
-  <text x="350" y="471" class="item">LLM, judges candidates only</text>
-  <rect x="560" y="460" width="12" height="12" rx="3" class="green"/>
-  <text x="580" y="471" class="item">Credentialed, no model</text>
-  <text x="40" y="502" class="subtitle">Deterministic tools own recall. The LLM owns precision.</text>
+  <rect x="130" y="500" width="12" height="12" rx="3" class="blue"/>
+  <text x="150" y="511" class="item">Deterministic, no model</text>
+  <rect x="330" y="500" width="12" height="12" rx="3" class="purple"/>
+  <text x="350" y="511" class="item">LLM, judges candidates only</text>
+  <rect x="560" y="500" width="12" height="12" rx="3" class="green"/>
+  <text x="580" y="511" class="item">Credentialed, no model</text>
+  <rect x="770" y="499" width="64" height="16" rx="8" class="designed"/>
+  <text x="802" y="511" class="status designed-text" text-anchor="middle">DESIGNED</text>
+  <text x="842" y="511" class="item">in a decision record</text>
+  <rect x="130" y="527" width="54" height="16" rx="8" class="gated"/>
+  <text x="157" y="539" class="status gated-text" text-anchor="middle">GATED</text>
+  <text x="192" y="539" class="item">built only if the shadow-mode measurement passes its gate</text>
+  <text x="40" y="566" class="subtitle">Deterministic tools own recall. The LLM owns precision.</text>
 </svg>
