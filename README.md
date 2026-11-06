@@ -14,13 +14,18 @@ layer discards anything that cannot be checked.
 
 ## How it works
 
-| Plane | Role | Model | Credentials |
-|---|---|---|---|
-| 0 · Intake | Normalise the diff; run only on `pull_request` | No | No |
-| 1 · Signals | `ruff` security rules, `zizmor`, `uv audit`, `semgrep` on what the diff adds | No | No |
-| 2 · Verification | Judge each signal: reachable, mitigated, introduced by this change | Yes | No |
-| 3 · Admission | Deduplicate, validate anchors, require `file:line` evidence, cap output | No | No |
-| 4 · Posting | Publish validated results with a short-lived, per-PR token | No | Yes |
+| Plane | Role | Model | Credentials | Status |
+|---|---|---|---|---|
+| 0 · Intake | Normalise the diff; run only on `pull_request` | No | No | Designed |
+| 1 · Signals | `ruff` security rules, `zizmor`, `uv audit`, `semgrep` on what the diff adds | No | No | Designed; prototype in Sentoru |
+| 2 · Verification | Judge each signal: reachable, mitigated, introduced by this change | Yes | No | Gated on measurement |
+| 3 · Admission | Deduplicate, validate anchors, require `file:line` evidence, cap output | No | No | Designed |
+| 4 · Posting | Publish validated results with a short-lived, per-PR token | No | Yes | Designed |
+| Witness sandbox | Run a test that passes on `base` and fails on `head` | No | No | Gated on measurement |
+
+*Implemented* means merged here with tests. *Designed* means specified in a decision
+record. *Gated on measurement* means it is built only if the shadow-mode gate in
+[`CLAUDE.md`](CLAUDE.md) passes.
 
 Two rules hold the design together:
 
@@ -32,6 +37,22 @@ Two rules hold the design together:
 Hypotheses that come from the model also need a **witness**: a test that passes on `base`
 and fails on `head`, executed in an isolated sandbox. The sandbox is built only if
 measurement shows enough hypotheses can be witnessed.
+
+## Invariants
+
+Guarantees enforced by tests that run in CI. Each test is proven to fail on a workflow
+that breaks it.
+
+| Invariant | Enforced by |
+|---|---|
+| No workflow uses `pull_request_target` | `zizmor` (`dangerous-triggers`), checked live in [`tests/policy/test_workflows.py`](tests/policy/test_workflows.py) |
+| Every action is pinned to a full commit SHA | `zizmor` (`unpinned-uses`), checked live in the same test |
+| Every workflow starts from `permissions: {}` | [`tests/policy/test_workflows.py`](tests/policy/test_workflows.py) |
+| Every job has a timeout | [`tests/policy/test_workflows.py`](tests/policy/test_workflows.py) |
+| No job triggered by attacker-influenced content references `secrets.*`, so no job holds untrusted text and secrets at once | [`tests/policy/test_workflows.py`](tests/policy/test_workflows.py) |
+
+Not covered: permissions and secrets inherited by reusable workflows, composite
+actions, and repository or organisation settings outside the YAML.
 
 ## Architecture decisions
 
@@ -50,8 +71,8 @@ architecture, the evidence behind every figure, and one record per decision.
 
 ## Status
 
-Repository setup. Planes 1 to 4 are designed and migrate from Sentoru in separate pull
-requests.
+Repository, CI/CD and workflow policy are in place. No plane is implemented here
+yet; Plane 1 migrates from Sentoru next.
 
 ## Development
 
